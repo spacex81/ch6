@@ -57,6 +57,7 @@ func GetFeedEntries(url string) ([]Entry, error) {
 	return feed.Entries, nil
 }
 
+// RABBITMQ_URI="amqp://user:password@localhost:5672/" RABBITMQ_QUEUE=rss_urls MONGO_URI="mongodb://admin:password@localhost:27017/test?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false" MONGO_DATABASE=demo go run main.go
 func main() {
 
 	// mongodb

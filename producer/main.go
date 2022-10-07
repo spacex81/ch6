@@ -54,6 +54,7 @@ func init() {
 	channelAmqp, _ = amqpConnection.Channel()
 }
 
+// RABBITMQ_URI="amqp://user:password@localhost:5672/" RABBITMQ_QUEUE=rss_urls go run main.go
 func main() {
 	router := gin.Default()
 	router.POST("/parse", ParserHandler)
