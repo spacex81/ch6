@@ -54,6 +54,9 @@ func GetFeedEntries(url string) ([]Entry, error) {
 	var feed Feed
 	xml.Unmarshal(byteValue, &feed)
 
+	fmt.Print("feed")
+	fmt.Print(feed)
+
 	return feed.Entries, nil
 }
 
@@ -102,7 +105,7 @@ func main() {
 
 			collection := mongoClient.Database(os.Getenv("MONGO_DATABASE")).Collection("recipes")
 			fmt.Println(len(entries))
-			for _, entry := range entries[2:] {
+			for _, entry := range entries {
 				collection.InsertOne(ctx, bson.M{
 					"title":     entry.Title,
 					"thumbnail": entry.Thumbnail.URL,
