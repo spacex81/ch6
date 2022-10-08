@@ -6,9 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// swagger:parameters recipes newRecipe
 type Recipe struct {
-	//swagger:ignore
 	ID           primitive.ObjectID `json:"id" bson:"_id"`
 	Name         string             `json:"name" bson:"name"`
 	Tags         []string           `json:"tags" bson:"tags"`

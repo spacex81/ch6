@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
+	"example.com/models"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
-	"github.com/mlabouardy/recipes-api/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -29,14 +29,6 @@ func NewRecipesHandler(ctx context.Context, collection *mongo.Collection, redisC
 	}
 }
 
-// swagger:operation GET /recipes recipes listRecipes
-// Returns list of recipes
-// ---
-// produces:
-// - application/json
-// responses:
-//     '200':
-//         description: Successful operation
 func (handler *RecipesHandler) ListRecipesHandler(c *gin.Context) {
 	val, err := handler.redisClient.Get("recipes").Result()
 	if err == redis.Nil {
@@ -69,16 +61,6 @@ func (handler *RecipesHandler) ListRecipesHandler(c *gin.Context) {
 	}
 }
 
-// swagger:operation POST /recipes recipes newRecipe
-// Create a new recipe
-// ---
-// produces:
-// - application/json
-// responses:
-//     '200':
-//         description: Successful operation
-//     '400':
-//         description: Invalid input
 func (handler *RecipesHandler) NewRecipeHandler(c *gin.Context) {
 	var recipe models.Recipe
 	if err := c.ShouldBindJSON(&recipe); err != nil {
@@ -100,24 +82,6 @@ func (handler *RecipesHandler) NewRecipeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, recipe)
 }
 
-// swagger:operation PUT /recipes/{id} recipes updateRecipe
-// Update an existing recipe
-// ---
-// parameters:
-// - name: id
-//   in: path
-//   description: ID of the recipe
-//   required: true
-//   type: string
-// produces:
-// - application/json
-// responses:
-//     '200':
-//         description: Successful operation
-//     '400':
-//         description: Invalid input
-//     '404':
-//         description: Invalid recipe ID
 func (handler *RecipesHandler) UpdateRecipeHandler(c *gin.Context) {
 	id := c.Param("id")
 	var recipe models.Recipe
@@ -143,22 +107,6 @@ func (handler *RecipesHandler) UpdateRecipeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Recipe has been updated"})
 }
 
-// swagger:operation DELETE /recipes/{id} recipes deleteRecipe
-// Delete an existing recipe
-// ---
-// produces:
-// - application/json
-// parameters:
-//   - name: id
-//     in: path
-//     description: ID of the recipe
-//     required: true
-//     type: string
-// responses:
-//     '200':
-//         description: Successful operation
-//     '404':
-//         description: Invalid recipe ID
 func (handler *RecipesHandler) DeleteRecipeHandler(c *gin.Context) {
 	id := c.Param("id")
 	objectId, _ := primitive.ObjectIDFromHex(id)
@@ -172,20 +120,6 @@ func (handler *RecipesHandler) DeleteRecipeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Recipe has been deleted"})
 }
 
-// swagger:operation GET /recipes/{id} recipes
-// Get one recipe
-// ---
-// produces:
-// - application/json
-// parameters:
-//   - name: id
-//     in: path
-//     description: recipe ID
-//     required: true
-//     type: string
-// responses:
-//     '200':
-//         description: Successful operation
 func (handler *RecipesHandler) GetOneRecipeHandler(c *gin.Context) {
 	id := c.Param("id")
 	objectId, _ := primitive.ObjectIDFromHex(id)
@@ -201,36 +135,3 @@ func (handler *RecipesHandler) GetOneRecipeHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, recipe)
 }
-
-// swagger:operation GET /recipes/search recipes findRecipe
-// Search recipes based on tags
-// ---
-// produces:
-// - application/json
-// parameters:
-//   - name: tag
-//     in: query
-//     description: recipe tag
-//     required: true
-//     type: string
-// responses:
-//     '200':
-//         description: Successful operation
-/*func SearchRecipesHandler(c *gin.Context) {
-	tag := c.Query("tag")
-	listOfRecipes := make([]Recipe, 0)
-
-	for i := 0; i < len(recipes); i++ {
-		found := false
-		for _, t := range recipes[i].Tags {
-			if strings.EqualFold(t, tag) {
-				found = true
-			}
-		}
-		if found {
-			listOfRecipes = append(listOfRecipes, recipes[i])
-		}
-	}
-
-	c.JSON(http.StatusOK, listOfRecipes)
-}*/

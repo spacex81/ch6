@@ -1,20 +1,3 @@
-// Recipes API
-//
-// This is a sample recipes API. You can find out more about the API at https://github.com/PacktPublishing/Building-Distributed-Applications-in-Gin.
-//
-//		Schemes: http
-//	 Host: localhost:8080
-//		BasePath: /
-//		Version: 1.0.0
-//		Contact: Mohamed Labouardy <mohamed@labouardy.com> https://labouardy.com
-//
-//		Consumes:
-//		- application/json
-//
-//		Produces:
-//		- application/json
-//
-// swagger:meta
 package main
 
 import (
@@ -22,9 +5,9 @@ import (
 	"log"
 	"os"
 
+	"example.com/handlers"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
-	handlers "github.com/mlabouardy/recipes-api/handlers"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -60,5 +43,5 @@ func main() {
 	router.PUT("/recipes/:id", recipesHandler.UpdateRecipeHandler)
 	router.DELETE("/recipes/:id", recipesHandler.DeleteRecipeHandler)
 	router.GET("/recipes/:id", recipesHandler.GetOneRecipeHandler)
-	router.Run()
+	router.Run(":8081")
 }
